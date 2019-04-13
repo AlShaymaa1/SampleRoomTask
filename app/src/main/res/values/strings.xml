@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">WirelessDynamicsTask</string>
+    <string name="open_button_name">Show Data</string>
+    <string name="add_button_name">Add</string>
+    <string name="success_toast_message">your item inserted successfully</string>
+    <string name="empty_toast_message">please insert some task</string>
+</resources>
