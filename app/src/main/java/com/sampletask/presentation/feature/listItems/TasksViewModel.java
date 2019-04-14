@@ -5,9 +5,12 @@ import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
 import com.sampletask.entities.Task;
-import com.sampletask.usecases.domain.usecases.RetrieveTasksUseCase;
+import com.sampletask.presentation.DaggerAppComponent;
+import com.sampletask.usecases.domain.usecases.InsertTaskUseCase;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -18,18 +21,16 @@ import io.reactivex.schedulers.Schedulers;
 public class TasksViewModel extends ViewModel {
 
 
-    private RetrieveTasksUseCase useCase;
+    @Inject
+    InsertTaskUseCase useCase;
     private CompositeDisposable disposable;
-     MutableLiveData<Boolean> notifyAdapter;
      MutableLiveData<List<Task>> result;
 
 
     public TasksViewModel() {
-        useCase = new RetrieveTasksUseCase();
-        disposable = new CompositeDisposable();
-        notifyAdapter=new MutableLiveData<>();
+        DaggerAppComponent.Initializer.buildComponent().injectUseCase(this);
         result=new MutableLiveData<>();
-
+        disposable=new CompositeDisposable();
     }
 
 
@@ -46,7 +47,7 @@ public class TasksViewModel extends ViewModel {
                 return true;}).
                     subscribeOn(Schedulers.io()).
                     observeOn(AndroidSchedulers.mainThread()).
-                    subscribe(value -> notifyAdapter.postValue(true), error -> notifyAdapter.postValue(false));
+                    subscribe(value ->Log.e("success",value.toString()), error -> Log.e("success",error.getMessage()));
             disposable.add(d);
     }
 

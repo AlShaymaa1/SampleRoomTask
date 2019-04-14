@@ -9,7 +9,7 @@ import com.sampletask.presentation.MyApplication;
 
 @Database(entities = {Task.class}, version = 1,exportSchema = false)
 public abstract class TaskRoomDataBase extends RoomDatabase {
-    public abstract TaskDao dataDao();
+    public abstract TaskDao getTaskDao();
 
     private static volatile TaskRoomDataBase INSTANCE;
 
