@@ -2,6 +2,7 @@ package com.sampletask.presentation.feature.home;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 
 import com.sampletask.entities.Task;
 import com.sampletask.usecases.domain.usecases.InsertTaskUseCase;
@@ -14,24 +15,26 @@ import io.reactivex.schedulers.Schedulers;
 
 public class HomeViewModel extends ViewModel {
 
+
     private InsertTaskUseCase useCase;
     private CompositeDisposable disposable;
-     MutableLiveData<Boolean> clearText;
+    MutableLiveData<Boolean> clearText;
 
     public HomeViewModel() {
         useCase = new InsertTaskUseCase();
         disposable = new CompositeDisposable();
-        clearText=new MutableLiveData<>();
+        clearText = new MutableLiveData<>();
     }
 
-
-     void insertData(Task text) {
-        Disposable d = Single.fromCallable(()->{useCase.insert(text);
-                       return true;}).
+    void insertNewTask(Task text) {
+        Disposable d = Single.fromCallable(() -> {
+            useCase.insert(text,clearText);
+            return true;
+        }).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).
-                subscribe(value -> clearText.postValue(true), error -> clearText.postValue(false));
-                disposable.add(d);
+                subscribe(value -> Log.e("success",value.toString()), error ->Log.e("fail",error.getMessage()) );
+        disposable.add(d);
     }
 
 
@@ -40,4 +43,5 @@ public class HomeViewModel extends ViewModel {
         super.onCleared();
         disposable.dispose();
     }
+
 }

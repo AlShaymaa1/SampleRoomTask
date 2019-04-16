@@ -4,19 +4,24 @@ import android.app.Application;
 
 import com.sampletask.entities.Task;
 
+import com.sampletask.presentation.MyApplication;
 import com.sampletask.usecases.domain.database.TaskDao;
 import com.sampletask.usecases.domain.database.TaskRoomDataBase;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class TaskRepository {
 
-
+    //@Inject Application application;
     private TaskDao taskDao;
+    //@Inject TaskRoomDataBase taskRoomDataBase;
 
     public TaskRepository() {
-    TaskRoomDataBase dataBase=TaskRoomDataBase.getDatabase();
-    taskDao=dataBase.getTaskDao();
+        //MyApplication.buildComponent().injectApp(this);
+        TaskRoomDataBase dataBase = TaskRoomDataBase.getDatabase();
+        taskDao = dataBase.getTaskDao();
     }
 
     public List<Task> retrieveAllData() {
@@ -27,7 +32,7 @@ public class TaskRepository {
         taskDao.insert(text);
     }
 
-    public void updateTask(Task task){
+    public void updateTask(Task task) {
         taskDao.update(task);
     }
 

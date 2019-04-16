@@ -1,5 +1,6 @@
 package com.sampletask.usecases.domain.database;
 
+
 import com.sampletask.usecases.domain.repositories.TaskRepository;
 import com.sampletask.usecases.domain.usecases.InsertTaskUseCase;
 

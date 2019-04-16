@@ -24,7 +24,7 @@ public class HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initViews();
-        HomeViewModel viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        HomeViewModel viewModel=ViewModelProviders.of(this).get(HomeViewModel.class);
 
         viewModel.clearText.observe(this, aBoolean-> {
                 if (aBoolean) {
@@ -38,7 +38,7 @@ public class HomeScreen extends AppCompatActivity {
             if(!TextUtils.isEmpty(data)){
                 Task task1 = new Task();
                 task1.setText(data);
-                viewModel.insertData(task1);
+                viewModel.insertNewTask(task1);
             }else {
                 Toast.makeText(HomeScreen.this, getResources().getString(R.string.empty_toast_message), Toast.LENGTH_SHORT).show();
             }

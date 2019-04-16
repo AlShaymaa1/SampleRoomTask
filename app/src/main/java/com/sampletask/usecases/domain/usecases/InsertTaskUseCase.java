@@ -1,32 +1,44 @@
 package com.sampletask.usecases.domain.usecases;
 
+import android.arch.lifecycle.MutableLiveData;
+import android.text.TextUtils;
+
 import com.sampletask.entities.Task;
-import com.sampletask.presentation.DaggerAppComponent;
 import com.sampletask.usecases.domain.repositories.TaskRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
 
 public class InsertTaskUseCase {
 
 
-    @Inject
-    TaskRepository repository;
+    private TaskRepository repository;
 
     public InsertTaskUseCase() {
-        DaggerAppComponent.Initializer.buildComponent().injectRepo(this);
+        repository = new TaskRepository();
+        new InsertTaskUseCase(repository);
     }
 
-    public void insert(Task text) {
-        repository.addItem(text);
+    public InsertTaskUseCase(TaskRepository repository) {
+        this.repository = repository;
     }
 
-    public List<Task> retrieveData(){
-        return repository.retrieveAllData();
+    public void insert(Task text, MutableLiveData<Boolean> clearText) {
+        if (TextUtils.isEmpty(text.getText())) {
+            clearText.postValue(false);
+        } else {
+            repository.addItem(text);
+            clearText.postValue(true);
+        }
     }
 
-    public void updateTask(Task task){
+    public void retrieveTasks(MutableLiveData<List<Task>> result) {
+        List<Task> list=repository.retrieveAllData();
+        result.postValue(list);
+    }
+
+    public void updateTask(Task task) {
         repository.updateTask(task);
     }
 }
